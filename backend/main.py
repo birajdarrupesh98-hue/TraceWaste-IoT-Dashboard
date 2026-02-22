@@ -63,7 +63,28 @@ app.add_middleware(
 # 5. YOUR ROUTES (Everything else follows)
 # @app.get("/") ...
 # @app.post("/api/auth/login") ...
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware  # 1. Add this import
 
+app = FastAPI()
+
+# 2. Update this list with your ACTUAL Vercel link
+origins = [
+    "http://localhost:3000",
+    "http://localhost:5173", # Standard Vite port
+    "https://waste-management-ui.vercel.app", # Replace with your real Vercel URL
+]
+
+# 3. Add the middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# ... your @app.get("/") and other routes stay below here ...
 
 
 
