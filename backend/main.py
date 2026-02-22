@@ -18,6 +18,60 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 import uvicorn
 
+import os
+from dotenv import load_dotenv
+
+# This command looks for your .env file and loads the keys
+load_dotenv() 
+
+# Now you can use your new secure key
+SECRET_KEY = os.getenv("SECRET_KEY")
+ALGORITHM = os.getenv("ALGORITHM")
+
+origins = [
+    "http://localhost:3000",
+    "https://your-project-name.vercel.app", # Add your Vercel link here
+]
+
+
+# 1. IMPORTS (Always first)
+from contextlib import asynccontextmanager
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+# ... keep your other imports like 'uvicorn' or 'json'
+
+# 2. LIFESPAN HANDLER (The new logic)
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # This runs when you type 'python Main.py'
+    print("🚀 IoT System Starting: Initializing background tasks...")
+    yield 
+    # This runs when you press 'Ctrl + C'
+    print("🛑 IoT System Shutting Down: Cleaning up resources...")
+
+# 3. APP INITIALIZATION (Pass the lifespan here)
+app = FastAPI(lifespan=lifespan)
+
+# 4. CORS SETTINGS (Very important for your React App to connect)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"], # In production, change this to your Vercel URL
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# 5. YOUR ROUTES (Everything else follows)
+# @app.get("/") ...
+# @app.post("/api/auth/login") ...
+
+
+
+
+
+
+
+
+
 # ─── JWT Config ────────────────────────────────────────────────────────────────
 SECRET_KEY = "ewaste-iot-hackathon-secret-2024"
 ALGORITHM = "HS256"
