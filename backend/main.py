@@ -63,6 +63,18 @@ app.add_middleware(
 # 5. YOUR ROUTES (Everything else follows)
 # @app.get("/") ...
 # @app.post("/api/auth/login") ...
+
+@app.post("/api/auth/login") # Ensure NO trailing slash here
+async def login(body: dict):
+    # Use these exact credentials to test
+    users = {"admin": "hackathon2024", "demo": "demo123"}
+    
+    if body.get("username") in users and users[body["username"]] == body.get("password"):
+        token = create_token({"sub": body["username"]})
+        return {"access_token": token, "token_type": "bearer", "user": body["username"]}
+    
+    raise HTTPException(status_code=401, detail="Invalid credentials")
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware  # 1. Add this import
 
