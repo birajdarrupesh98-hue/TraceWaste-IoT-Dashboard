@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 
-// ─── Config ───────────────────────────────────────────────────────────────────
-const API_BASE = "http://localhost:8000";
-const WS_URL = "ws://localhost:8000/ws";
+// ——— Config ———
+const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:8000";
+const WS_URL = import.meta.env.VITE_WS_URL || "ws://localhost:8000/ws";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 const statusColor = {
